@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Happy Birthday | A Premium Interactive Experience</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Montserrat:wght@300;400;600&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<canvas id="bg-canvas"></canvas>
+
+<div id="screen-flash"></div>
+
+<div id="loader-screen" class="active">
+<div class="loader-content">
+<h1 class="loader-title">CREATING MAGIC</h1>
+<div class="loader-track">
+<div id="loader-bar"></div>
+</div>
+<div id="loader-status">Initializing assets... 0%</div>
+</div>
+</div>
+
+<div id="interaction-stage" class="hidden">
+<div class="instruction-text">
+<h2>Ignite the Flame</h2>
+<p>Drag and strike the matchstick against the matchbox striker to light the fuse.</p>
+</div>
+
+<div class="box-and-stick-container">
+<div class="matchbox-wrapper">
+<div class="matchbox">
+<div class="matchbox-face front">
+<div class="brand-design">
+<span>PREMIUM</span>
+<div class="inner-oval">✨ LUXE ✨</div>
+<span>SPARKERS</span>
+</div>
+</div>
+<div class="matchbox-face back"></div>
+<div class="matchbox-face left-striker" id="striker-surface"></div>
+<div class="matchbox-face right"></div>
+<div class="matchbox-face top"></div>
+<div class="matchbox-face bottom"></div>
+</div>
+</div>
+
+<div id="matchstick" class="draggable">
+<div class="stick-wood"></div>
+<div class="stick-head"></div>
+<div id="stick-flame-anchor"></div>
+</div>
+</div>
+
+<div class="fuse-container">
+<canvas id="fuse-canvas"></canvas>
+</div>
+</div>
+
+<div id="gift-stage" class="hidden">
+<div class="gift-box-container" id="gift-box-element">
+<div class="ribbon-v"></div>
+<div class="ribbon-h"></div>
+<div class="ribbon-bow">
+<div class="bow-left"></div>
+<div class="bow-right"></div>
+</div>
+<div class="gift-lid"></div>
+<div class="gift-body">
+<div class="glow-burst"></div>
+</div>
+</div>
+</div>
+
+<div id="celebration-stage" class="hidden">
+
+<div class="slideshow-viewport">
+<div class="photo-slide active" id="slide-1" style="background-image: url('images/1.jpg');"></div>
+<div class="photo-slide" id="slide-2" style="background-image: url('images/2.jpg');"></div>
+<div class="photo-slide" id="slide-3" style="background-image: url('images/3.jpg');"></div>
+<div class="photo-slide" id="slide-4" style="background-image: url('images/4.jpg');"></div>
+<div class="photo-slide" id="slide-5" style="background-image: url('images/5.jpg');"></div>
+<div class="photo-slide" id="slide-6" style="background-image: url('images/6.jpg');"></div>
+<div class="photo-slide" id="slide-7" style="background-image: url('images/7.jpg');"></div>
+<div class="photo-slide" id="slide-8" style="background-image: url('images/8.jpg');"></div>
+<div class="vignette-overlay"></div>
+</div>
+
+<div class="message-card" id="message-panel">
+<div class="card-glow"></div>
+<div class="card-content">
+<div id="typewriter-text" class="text-display"></div>
+</div>
+</div>
+</div>
+
+<audio id="birthday-track" preload="auto" src="assets/music.mp3"></audio>
+
+<script src="script.js"></script>
+</body>
+</html>

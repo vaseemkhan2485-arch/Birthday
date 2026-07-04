@@ -1,0 +1,596 @@
+:root {
+--bg-dark: #07020d;
+--luxury-pink: #ff75a0;
+--luxury-purple: #4a1c6d;
+--gold-glow: #fca311;
+--glass-bg: rgba(255, 255, 255, 0.03);
+--glass-border: rgba(255, 255, 255, 0.08);
+--font-serif: 'Cinzel', serif;
+--font-sans: 'Montserrat', sans-serif;
+--font-cursive: 'Playfair Display', serif;
+}
+
+• {
+box-sizing: border-box;
+margin: 0;
+padding: 0;
+-webkit-tap-highlight-color: transparent;
+user-select: none;
+}
+
+body, html {
+width: 100%;
+height: 100%;
+overflow: hidden;
+background-color: var(--bg-dark);
+font-family: var(--font-sans);
+color: #ffffff;
+}
+
+/* Base Canvas Background Setup */
+#bg-canvas {
+position: fixed;
+top: 0;
+left: 0;
+width: 100%;
+height: 100%;
+z-index: 1;
+pointer-events: none;
+}
+
+/* Global Transition Flash Overlay */
+#screen-flash {
+position: fixed;
+top: 0;
+left: 0;
+width: 100%;
+height: 100%;
+background: #ffffff;
+opacity: 0;
+z-index: 9999;
+pointer-events: none;
+}
+
+/* Utilities */
+.hidden {
+display: none !important;
+opacity: 0;
+}
+.visible-flex {
+display: flex !important;
+}
+
+/* --- 1. LUXURY LOADING SCREEN --- */
+#loader-screen {
+position: fixed;
+top: 0;
+left: 0;
+width: 100%;
+height: 100%;
+background: radial-gradient(circle at center, #160626 0%, var(--bg-dark) 100%);
+z-index: 1000;
+display: flex;
+align-items: center;
+justify-content: center;
+transition: opacity 1s cubic-bezier(0.77, 0, 0.175, 1);
+}
+
+.loader-content {
+text-align: center;
+width: 80%;
+max-width: 400px;
+}
+
+.loader-title {
+font-family: var(--font-serif);
+font-size: 1.5rem;
+letter-spacing: 0.4rem;
+margin-bottom: 25px;
+color: #fff;
+text-shadow: 0 0 15px rgba(255, 117, 160, 0.6);
+}
+
+.loader-track {
+width: 100%;
+height: 3px;
+background: rgba(255, 255, 255, 0.05);
+border-radius: 2px;
+overflow: hidden;
+position: relative;
+box-shadow: inset 0 1px 3px rgba(0,0,0,0.5);
+}
+
+#loader-bar {
+width: 0%;
+height: 100%;
+background: linear-gradient(90deg, var(--luxury-pink), #b5179e, var(--gold-glow));
+box-shadow: 0 0 12px var(--luxury-pink);
+transition: width 0.1s linear;
+}
+
+#loader-status {
+margin-top: 15px;
+font-size: 0.75rem;
+letter-spacing: 0.1rem;
+color: rgba(255,255,255,0.4);
+text-transform: uppercase;
+}
+
+/* --- 2. INTERACTIVE MATCHBOX STAGE --- */
+#interaction-stage {
+position: absolute;
+width: 100%;
+height: 100%;
+z-index: 10;
+display: flex;
+flex-direction: column;
+align-items: center;
+justify-content: space-between;
+padding: 60px 20px;
+}
+
+.instruction-text {
+text-align: center;
+z-index: 15;
+max-width: 500px;
+}
+
+.instruction-text h2 {
+font-family: var(--font-serif);
+font-size: 1.8rem;
+letter-spacing: 0.2rem;
+margin-bottom: 10px;
+color: #fff;
+text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+}
+
+.instruction-text p {
+font-size: 0.9rem;
+color: rgba(255,255,255,0.7);
+line-height: 1.4;
+}
+
+.box-and-stick-container {
+position: relative;
+width: 100%;
+flex-grow: 1;
+display: flex;
+align-items: center;
+justify-content: center;
+}
+
+/* 3D Matchbox Styling */
+.matchbox-wrapper {
+perspective: 1000px;
+width: 140px;
+height: 220px;
+}
+
+.matchbox {
+width: 100%;
+height: 100%;
+position: relative;
+transform-style: preserve-3d;
+transform: rotateX(20deg) rotateY(-25deg);
+}
+
+.matchbox-face {
+position: absolute;
+background-color: #3d261e;
+border: 1px solid #261712;
+}
+
+.matchbox-face.front {
+width: 140px;
+height: 220px;
+transform: translateZ(25px);
+background: linear-gradient(135deg, #7a1f3d 0%, #300a18 100%);
+box-shadow: inset 0 0 20px rgba(0,0,0,0.4);
+display: flex;
+align-items: center;
+justify-content: center;
+padding: 10px;
+}
+
+.brand-design {
+border: 2px solid var(--gold-glow);
+width: 100%;
+height: 100%;
+display: flex;
+flex-direction: column;
+align-items: center;
+justify-content: space-between;
+padding: 20px 0;
+font-family: var(--font-serif);
+color: var(--gold-glow);
+font-size: 0.7rem;
+letter-spacing: 0.15rem;
+}
+
+.inner-oval {
+border: 1px dashed var(--gold-glow);
+padding: 15px 5px;
+border-radius: 50%;
+font-weight: bold;
+color: #fff;
+}
+
+.matchbox-face.back {
+width: 140px;
+height: 220px;
+transform: rotateY(180deg) translateZ(25px);
+background: #2b1812;
+}
+
+.matchbox-face.left-striker {
+width: 50px;
+height: 220px;
+transform: rotateY(-90deg) translateZ(25px);
+background: repeating-linear-gradient(
+45deg,
+#40241a,
+#40241a 4px,
+#2b1812 4px,
+#2b1812 8px
+);
+box-shadow: inset 0 0 15px rgba(0,0,0,0.8);
+cursor: pointer;
+}
+
+.matchbox-face.right {
+width: 50px;
+height: 220px;
+transform: rotateY(90deg) translateZ(115px);
+background: #472c23;
+}
+
+.matchbox-face.top {
+width: 140px;
+height: 50px;
+transform: rotateX(90deg) translateZ(25px);
+background: #543429;
+}
+
+.matchbox-face.bottom {
+width: 140px;
+height: 50px;
+transform: rotateX(-90deg) translateZ(195px);
+background: #21120d;
+}
+
+/* Matchstick Graphic asset */
+#matchstick {
+position: absolute;
+width: 16px;
+height: 180px;
+cursor: grab;
+z-index: 100;
+transform-origin: top center;
+filter: drop-shadow(0 10px 15px rgba(0,0,0,0.5));
+}
+
+#matchstick:active {
+cursor: grabbing;
+}
+
+.stick-wood {
+width: 8px;
+height: 165px;
+background: linear-gradient(to right, #ebd5b0 0%, #ccb48f 100%);
+margin: 0 auto;
+border-radius: 1px;
+}
+
+.stick-head {
+width: 16px;
+height: 22px;
+background: radial-gradient(circle at 50% 30%, #cc1b24 0%, #73060a 100%);
+border-radius: 50% 50% 40% 40%;
+position: absolute;
+top: 0;
+left: 0;
+}
+
+#stick-flame-anchor {
+position: absolute;
+top: -10px;
+left: 8px;
+width: 1px;
+height: 1px;
+}
+
+.fuse-container {
+position: absolute;
+bottom: 40px;
+width: 90%;
+max-width: 600px;
+height: 120px;
+z-index: 12;
+}
+
+#fuse-canvas {
+width: 100%;
+height: 100%;
+}
+
+/* --- 3. GIFT BOX STAGE --- */
+#gift-stage {
+position: absolute;
+width: 100%;
+height: 100%;
+z-index: 20;
+display: flex;
+align-items: center;
+justify-content: center;
+}
+
+.gift-box-container {
+position: relative;
+width: 200px;
+height: 200px;
+cursor: pointer;
+transform-style: preserve-3d;
+transform: perspective(600px) rotateX(15deg) rotateY(-10deg);
+}
+
+.gift-box-container.shake {
+animation: intenseShake 0.5s infinite linear;
+}
+
+.gift-body {
+position: absolute;
+bottom: 0;
+width: 200px;
+height: 170px;
+background: linear-gradient(135deg, #9d4edd 0%, #3c096c 100%);
+border-radius: 0 0 8px 8px;
+box-shadow: 0 30px 60px rgba(0,0,0,0.6), inset 0 0 30px rgba(0,0,0,0.3);
+overflow: hidden;
+}
+
+.gift-lid {
+position: absolute;
+top: 15px;
+left: -5px;
+width: 210px;
+height: 40px;
+background: linear-gradient(135deg, #c77dff 0%, #7b2cbf 100%);
+border-radius: 6px;
+z-index: 5;
+box-shadow: 0 8px 15px rgba(0,0,0,0.4);
+transform-origin: bottom right;
+transition: transform 1.2s cubic-bezier(0.85, 0, 0.15, 1);
+}
+
+/* Ribbon detailing */
+.ribbon-v, .ribbon-h {
+position: absolute;
+background: linear-gradient(to right, #ff9e00, #ff6000);
+z-index: 4;
+box-shadow: 0 0 10px rgba(255,158,0,0.3);
+}
+
+.ribbon-v {
+left: 90px;
+width: 20px;
+height: 100%;
+}
+
+.ribbon-h {
+top: 90px;
+height: 20px;
+width: 100%;
+}
+
+.ribbon-bow {
+position: absolute;
+top: -15px;
+left: 100px;
+width: 0;
+height: 0;
+z-index: 6;
+transition: opacity 0.5s ease;
+}
+
+.bow-left, .bow-right {
+position: absolute;
+width: 45px;
+height: 30px;
+background: linear-gradient(135deg, #ff9e00, #ff6000);
+border-radius: 50%;
+}
+
+.bow-left {
+transform: rotate(-35deg) translateX(-42px);
+}
+.bow-right {
+transform: rotate(35deg) translateX(-3px);
+}
+
+/* Gift reveal execution states */
+.gift-box-container.open .gift-lid {
+transform: translate3d(120px, -250px, 100px) rotateX(45deg) rotateZ(70deg);
+opacity: 0;
+}
+
+.gift-box-container.open .ribbon-bow {
+opacity: 0;
+}
+
+.glow-burst {
+position: absolute;
+width: 100%;
+height: 100%;
+background: radial-gradient(circle at center, #fff 0%, var(--luxury-pink) 60%, transparent 100%);
+opacity: 0;
+mix-blend-mode: screen;
+transition: opacity 0.6s ease;
+}
+
+.gift-box-container.open .glow-burst {
+opacity: 1;
+}
+
+/* --- 4. CINEMATIC CELEBRATION STAGE --- */
+#celebration-stage {
+position: absolute;
+width: 100%;
+height: 100%;
+z-index: 5;
+display: flex;
+flex-direction: column;
+justify-content: flex-end;
+align-items: center;
+padding-bottom: 5vh;
+}
+
+.slideshow-viewport {
+position: absolute;
+top: 0;
+left: 0;
+width: 100%;
+height: 100%;
+z-index: 2;
+overflow: hidden;
+}
+
+.photo-slide {
+position: absolute;
+top: 0;
+left: 0;
+width: 100%;
+height: 100%;
+background-size: cover;
+background-position: center;
+opacity: 0;
+transform: scale(1.0);
+transition: opacity 0.5s ease;
+}
+
+.photo-slide.active {
+opacity: 1;
+}
+
+/* Fast beat montage transition states */
+.photo-slide.montage-active {
+opacity: 1;
+animation: flashZoom 0.25s forwards cubic-bezier(0.1, 0.8, 0.2, 1);
+}
+
+/* Slow cinematic state (Ken Burns Effect) */
+.photo-slide.ken-burns {
+opacity: 0;
+animation: kenBurnsAnim 8s infinite alternate ease-in-out;
+}
+
+.photo-slide.ken-burns.active {
+opacity: 1;
+}
+
+.vignette-overlay {
+position: absolute;
+width: 100%;
+height: 100%;
+background: radial-gradient(circle, transparent 20%, rgba(7, 2, 13, 0.6) 70%, rgba(7, 2, 13, 0.95) 100%);
+pointer-events: none;
+}
+
+/* Glassmorphic Presentation Card */
+.message-card {
+position: relative;
+width: 90%;
+max-width: 480px;
+min-height: 160px;
+background: var(--glass-bg);
+border: 1px solid var(--glass-border);
+backdrop-filter: blur(25px);
+-webkit-backdrop-filter: blur(25px);
+border-radius: 24px;
+z-index: 10;
+padding: 30px;
+box-shadow: 0 40px 80px rgba(0, 0, 0, 0.7),
+inset 0 1px 0 rgba(255,255,255,0.1);
+transform: translateY(100px);
+opacity: 0;
+transition: transform 1.5s cubic-bezier(0.16, 1, 0.3, 1), opacity 1.5s ease;
+}
+
+.message-card.animate-in {
+transform: translateY(0);
+opacity: 1;
+}
+
+.card-glow {
+position: absolute;
+top: -10%;
+left: -10%;
+width: 120%;
+height: 120%;
+background: radial-gradient(circle, rgba(255,117,160,0.12) 0%, transparent 60%);
+pointer-events: none;
+z-index: 1;
+}
+
+.card-content {
+position: relative;
+z-index: 2;
+text-align: center;
+}
+
+.text-display {
+font-size: 1.15rem;
+line-height: 1.8;
+font-weight: 300;
+letter-spacing: 0.05rem;
+text-shadow: 0 2px 8px rgba(0,0,0,0.5);
+}
+
+.text-display span.highlight-title {
+font-family: var(--font-serif);
+font-size: 2.2rem;
+display: block;
+margin-bottom: 15px;
+letter-spacing: 0.2rem;
+background: linear-gradient(45deg, #ffffff, var(--luxury-pink), var(--gold-glow));
+-webkit-background-clip: text;
+-webkit-text-fill-color: transparent;
+font-weight: bold;
+}
+
+.text-display span.emoji {
+font-style: normal;
+font-size: 1.3rem;
+}
+
+/* --- KEYFRAME ANIMATIONS --- */
+@keyframes intenseShake {
+0% { transform: perspective(600px) rotateX(15deg) rotateY(-10deg) translate(0, 0); }
+20% { transform: perspective(600px) rotateX(17deg) rotateY(-8deg) translate(-3px, 2px); }
+40% { transform: perspective(600px) rotateX(13deg) rotateY(-12deg) translate(2px, -2px); }
+60% { transform: perspective(600px) rotateX(16deg) rotateY(-9deg) translate(-2px, -1px); }
+80% { transform: perspective(600px) rotateX(14deg) rotateY(-11deg) translate(3px, 1px); }
+100% { transform: perspective(600px) rotateX(15deg) rotateY(-10deg) translate(0, 0); }
+}
+
+@keyframes flashZoom {
+0% { transform: scale(1.15) rotate(2deg); filter: brightness(3) contrast(1.2); }
+100% { transform: scale(1.0) rotate(0deg); filter: brightness(1) contrast(1); }
+}
+
+@keyframes kenBurnsAnim {
+0% { transform: scale(1.0) translate(0, 0); }
+50% { transform: scale(1.12) translate(-1%, 1%); }
+100% { transform: scale(1.05) translate(1%, -1%); }
+}
+
+/* Responsiveness adjustments for varying viewports */
+@media(max-height: 500px) and (orientation: landscape) {
+#interaction-stage { padding: 15px; }
+.instruction-text h2 { font-size: 1.3rem; margin-bottom: 2px;}
+.instruction-text p { font-size: 0.75rem; }
+.matchbox-wrapper { transform: scale(0.65) rotateX(20deg) rotateY(-25deg); height: 160px; }
+#matchstick { transform: scale(0.75); }
+.message-card { min-height: auto; padding: 15px; }
+.text-display span.highlight-title { font-size: 1.5rem; margin-bottom: 5px; }
+.text-display { font-size: 0.9rem; line-height: 1.4; }
+}
